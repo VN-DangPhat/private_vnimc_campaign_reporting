@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sankey Project (Local VChart)</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <h1>Sankey Dashboard (Project Build)</h1>
+    <p class="sub">Built from scratch with local VChart bundle to avoid CDN import/module issues.</p>
+
+    <div class="grid">
+      <div class="card"><div class="k">Exposure</div><div class="v" id="kpi-exposure">-</div></div>
+      <div class="card"><div class="k">Click</div><div class="v" id="kpi-click">-</div></div>
+      <div class="card"><div class="k">AddToCart</div><div class="v" id="kpi-atc">-</div></div>
+      <div class="card"><div class="k">Checkout</div><div class="v" id="kpi-checkout">-</div></div>
+      <div class="card"><div class="k">Paid</div><div class="v" id="kpi-paid">-</div></div>
+      <div class="card"><div class="k">CVR (Exposure→Paid)</div><div class="v" id="kpi-cvr">-</div></div>
+    </div>
+
+    <div id="chart"></div>
+    <div id="msg" class="msg"></div>
+  </div>
+
+  <script src="./vendor/vchart.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
