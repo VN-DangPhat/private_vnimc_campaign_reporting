@@ -61,7 +61,7 @@
       const chart = new VChart(spec, { dom: 'chart' });
       chart.renderSync();
       msg.style.color = '#86efac';
-      msg.textContent = 'Rendered successfully (module import). Updated at 2026-04-28 02:00:16';
+      msg.textContent = 'Rendered successfully. Updated at 2026-04-28 02:02:23';
     } catch (err) {
       msg.textContent = 'Render failed. Import CDN may be blocked: ' + (err?.message || String(err));
     }
