@@ -3,61 +3,73 @@
 <head>
   <meta charset='UTF-8' />
   <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-  <title>Sankey Dashboard</title>
+  <title>VChart Sankey Tutorial Style</title>
   <style>
-    :root { --bg:#0b1220; --panel:#111a2e; --border:#243250; --text:#e6edf7; --muted:#9fb0cc; }
-    body { margin:0; background:var(--bg); color:var(--text); font-family: Inter, Arial, sans-serif; }
-    .wrap { max-width:1200px; margin:20px auto; padding:0 16px; }
-    .title { font-size:24px; font-weight:700; margin:0 0 8px; }
-    .sub { color:var(--muted); margin:0 0 14px; }
-    .grid { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-bottom:14px; }
-    .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px; }
-    .k { color:var(--muted); font-size:12px; margin-bottom:4px; }
-    .v { font-size:20px; font-weight:700; }
-    #chart { height:640px; background:var(--panel); border:1px solid var(--border); border-radius:12px; }
-    .note { margin-top:10px; color:var(--muted); font-size:12px; }
-    a { color:#93c5fd; }
+    body { margin: 0; padding: 0; background: #0f172a; color: #e2e8f0; font-family: Arial, sans-serif; }
+    .wrap { max-width: 1280px; margin: 20px auto; padding: 0 16px; }
+    h1 { margin: 0 0 8px; font-size: 24px; }
+    p { margin: 0 0 12px; color: #94a3b8; }
+    #chart { height: 700px; background: #111827; border: 1px solid #334155; border-radius: 10px; }
+    .note { margin-top: 10px; color: #94a3b8; font-size: 12px; }
   </style>
   <script src='https://unpkg.com/@visactor/vchart/build/index.min.js'></script>
 </head>
 <body>
   <div class='wrap'>
-    <h1 class='title'>Sankey Dashboard (GitHub Pages)</h1>
-    <p class='sub'>Interactive flow page hosted by GitHub Pages.</p>
-    <div class='grid'>
-      <div class='card'><div class='k'>Exposure</div><div class='v'>1,720</div></div>
-      <div class='card'><div class='k'>Click</div><div class='v'>1,200</div></div>
-      <div class='card'><div class='k'>AddToCart</div><div class='v'>760</div></div>
-      <div class='card'><div class='k'>Checkout</div><div class='v'>530</div></div>
-      <div class='card'><div class='k'>Paid</div><div class='v'>410</div></div>
-      <div class='card'><div class='k'>CVR (Exposure→Paid)</div><div class='v'>23.84%</div></div>
-    </div>
+    <h1>VChart Sankey \(Tutorial-Style\)</h1>
+    <p>Based on VChart Sankey guide structure: <code>type</code>, <code>data</code>, <code>sourceField</code>, <code>targetField</code>, <code>valueField</code>.</p>
     <div id='chart'></div>
-    <div class='note'>Updated at 2026-04-28 01:46:04</div>
+    <div class='note'>Updated at 2026-04-28 01:48:07</div>
   </div>
+
   <script>
     const spec = {
       type: 'sankey',
       width: 'container',
-      height: 640,
-      data: [{ id: 'sankey_data', values: [
-        { from: 'Exposure', to: 'Click', value: 1200 },
-        { from: 'Exposure', to: 'Skip', value: 520 },
-        { from: 'Click', to: 'AddToCart', value: 760 },
-        { from: 'Click', to: 'Bounce', value: 280 },
-        { from: 'AddToCart', to: 'Checkout', value: 530 },
-        { from: 'Checkout', to: 'Paid', value: 410 }
-      ] }],
+      height: 700,
+      data: [
+        {
+          id: 'data',
+          values: [
+            { from: 'A', to: 'B', value: 12 },
+            { from: 'A', to: 'C', value: 8 },
+            { from: 'B', to: 'D', value: 7 },
+            { from: 'B', to: 'E', value: 5 },
+            { from: 'C', to: 'E', value: 3 },
+            { from: 'C', to: 'F', value: 5 },
+            { from: 'D', to: 'G', value: 4 },
+            { from: 'E', to: 'G', value: 6 },
+            { from: 'F', to: 'G', value: 4 }
+          ]
+        }
+      ],
       sourceField: 'from',
       targetField: 'to',
       valueField: 'value',
-      node: { style: { stroke: '#0b1220', lineWidth: 1, fillOpacity: 0.95 } },
-      link: { style: { fillOpacity: 0.38 } },
-      label: { visible: true, style: { fill: '#e6edf7', fontSize: 12 } },
+      node: {
+        style: {
+          stroke: '#0b1220',
+          lineWidth: 1,
+          fillOpacity: 0.95
+        }
+      },
+      link: {
+        style: {
+          fillOpacity: 0.35
+        }
+      },
+      label: {
+        visible: true,
+        style: {
+          fill: '#e2e8f0',
+          fontSize: 12
+        }
+      },
       tooltip: { visible: true }
     };
-    const vchart = new VChart.default(spec, { dom: 'chart' });
-    vchart.renderSync();
+
+    const chart = new VChart.default(spec, { dom: 'chart' });
+    chart.renderSync();
   </script>
 </body>
 </html>
