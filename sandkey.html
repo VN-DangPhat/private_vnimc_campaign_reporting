@@ -3,83 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VChart Sankey</title>
+  <title>VChart Sankey (Import Style)</title>
   <style>
     body { margin: 0; background: #0f172a; color: #e2e8f0; font-family: Arial, sans-serif; }
     .wrap { max-width: 1200px; margin: 20px auto; padding: 0 16px; }
+    h2 { margin: 0 0 10px; }
     #chart { height: 680px; background: #111827; border: 1px solid #334155; border-radius: 10px; }
-    .msg { margin-top: 10px; color: #fca5a5; font-size: 13px; }
+    #msg { margin-top: 10px; color: #fca5a5; font-size: 13px; }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h2>VChart Sankey Demo</h2>
+    <h2>VChart Sankey (How to Import VChart style)</h2>
     <div id="chart"></div>
-    <div id="msg" class="msg"></div>
+    <div id="msg"></div>
   </div>
 
-  <script>
+  <script type="module">
+    const msg = document.getElementById('msg');
     const spec = {
-      type: "sankey",
-      width: "container",
+      type: 'sankey',
+      width: 'container',
       height: 680,
       data: [{
-        id: "sankey_data",
+        id: 'sankey_data',
         values: [
-          { from: "Exposure", to: "Click", value: 1200 },
-          { from: "Exposure", to: "Skip", value: 520 },
-          { from: "Click", to: "AddToCart", value: 760 },
-          { from: "Click", to: "Bounce", value: 280 },
-          { from: "AddToCart", to: "Checkout", value: 530 },
-          { from: "Checkout", to: "Paid", value: 410 }
+          { from: 'Exposure', to: 'Click', value: 1200 },
+          { from: 'Exposure', to: 'Skip', value: 520 },
+          { from: 'Click', to: 'AddToCart', value: 760 },
+          { from: 'Click', to: 'Bounce', value: 280 },
+          { from: 'AddToCart', to: 'Checkout', value: 530 },
+          { from: 'Checkout', to: 'Paid', value: 410 }
         ]
       }],
-      sourceField: "from",
-      targetField: "to",
-      valueField: "value",
-      node: { style: { stroke: "#0b1220", lineWidth: 1, fillOpacity: 0.95 } },
+      sourceField: 'from',
+      targetField: 'to',
+      valueField: 'value',
+      node: { style: { stroke: '#0b1220', lineWidth: 1, fillOpacity: 0.95 } },
       link: { style: { fillOpacity: 0.35 } },
-      label: { visible: true, style: { fill: "#e2e8f0", fontSize: 12 } },
+      label: { visible: true, style: { fill: '#e2e8f0', fontSize: 12 } },
       tooltip: { visible: true }
     };
 
-    function setMsg(text) { document.getElementById('msg').textContent = text; }
-
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.async = true;
-        s.onload = () => resolve(src);
-        s.onerror = () => reject(new Error(src));
-        document.head.appendChild(s);
-      });
-    }
-
-    async function boot() {
+    async function loadVChart() {
       try {
-        if (!window.VChart) {
-          try {
-            await loadScript('https://unpkg.com/@visactor/vchart/build/index.min.js');
-          } catch (e1) {
-            await loadScript('https://cdn.jsdelivr.net/npm/@visactor/vchart/build/index.min.js');
-          }
-        }
-
-        const VChartCtor = window.VChart && (window.VChart.default || window.VChart);
-        if (!VChartCtor) {
-          setMsg('VChart CDN was blocked/unreachable. Please check network policy for unpkg/jsDelivr.');
-          return;
-        }
-        const chart = new VChartCtor(spec, { dom: 'chart' });
-        chart.renderSync();
-        setMsg('Rendered successfully. Updated at 2026-04-28 01:58:17');
-      } catch (err) {
-        setMsg('Render failed: ' + (err && err.message ? err.message : String(err)));
+        const mod = await import('https://unpkg.com/@visactor/vchart/esm/index.js');
+        return mod.VChart || mod.default;
+      } catch (e1) {
+        const mod2 = await import('https://cdn.jsdelivr.net/npm/@visactor/vchart/esm/index.js');
+        return mod2.VChart || mod2.default;
       }
     }
 
-    boot();
+    try {
+      const VChart = await loadVChart();
+      if (!VChart) throw new Error('VChart export not found from CDN module');
+      const chart = new VChart(spec, { dom: 'chart' });
+      chart.renderSync();
+      msg.style.color = '#86efac';
+      msg.textContent = 'Rendered successfully (module import). Updated at 2026-04-28 02:00:16';
+    } catch (err) {
+      msg.textContent = 'Render failed. Import CDN may be blocked: ' + (err?.message || String(err));
+    }
   </script>
 </body>
 </html>
