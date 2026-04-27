@@ -1,68 +1,61 @@
 <!doctype html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='UTF-8' />
-  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-  <title>VChart Sankey (How to Get VChart)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VChart Sankey</title>
   <style>
     body { margin: 0; background: #0f172a; color: #e2e8f0; font-family: Arial, sans-serif; }
-    .wrap { max-width: 1280px; margin: 20px auto; padding: 0 16px; }
-    h1 { margin: 0 0 8px; font-size: 24px; }
-    p { margin: 0 0 12px; color: #94a3b8; }
-    #chart { height: 700px; background: #111827; border: 1px solid #334155; border-radius: 10px; }
-    .note { margin-top: 10px; color: #94a3b8; font-size: 12px; }
+    .wrap { max-width: 1200px; margin: 20px auto; padding: 0 16px; }
+    #chart { height: 680px; background: #111827; border: 1px solid #334155; border-radius: 10px; }
   </style>
-  <!-- Deploy style aligned to VChart "How to Get VChart" (CDN script include) -->
-  <script src='https://unpkg.com/@visactor/vchart/build/index.min.js'></script>
-  <script src='https://cdn.jsdelivr.net/npm/@visactor/vchart/build/index.min.js'></script>
+
+  <!-- unpkg -->
+  <script src="https://unpkg.com/@visactor/vchart/build/index.min.js"></script>
+
+  <!-- jsDelivr fallback -->
+  <script>
+    if (!window.VChart) {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/@visactor/vchart/build/index.min.js"><\/script>');
+    }
+  </script>
 </head>
 <body>
-  <div class='wrap'>
-    <h1>Sankey \(Deployed via VChart CDN\)</h1>
-    <p>This page uses CDN loading as in the VChart “How to Get VChart” approach, then renders Sankey spec.</p>
-    <div id='chart'></div>
-    <div class='note'>Updated at 2026-04-28 01:50:30</div>
+  <div class="wrap">
+    <h2>VChart Sankey Demo</h2>
+    <div id="chart"></div>
   </div>
 
   <script>
-    const chartSpec = {
-      type: 'sankey',
-      width: 'container',
-      height: 700,
-      data: [{
-        id: 'data',
-        values: [
-          { from: 'A', to: 'B', value: 12 },
-          { from: 'A', to: 'C', value: 8 },
-          { from: 'B', to: 'D', value: 7 },
-          { from: 'B', to: 'E', value: 5 },
-          { from: 'C', to: 'E', value: 3 },
-          { from: 'C', to: 'F', value: 5 },
-          { from: 'D', to: 'G', value: 4 },
-          { from: 'E', to: 'G', value: 6 },
-          { from: 'F', to: 'G', value: 4 }
-        ]
-      }],
-      sourceField: 'from',
-      targetField: 'to',
-      valueField: 'value',
-      node: { style: { stroke: '#0b1220', lineWidth: 1, fillOpacity: 0.95 } },
+    const spec = {
+      type: "sankey",
+      width: "container",
+      height: 680,
+      data: [
+        {
+          id: "sankey_data",
+          values: [
+            { from: "Exposure", to: "Click", value: 1200 },
+            { from: "Exposure", to: "Skip", value: 520 },
+            { from: "Click", to: "AddToCart", value: 760 },
+            { from: "Click", to: "Bounce", value: 280 },
+            { from: "AddToCart", to: "Checkout", value: 530 },
+            { from: "Checkout", to: "Paid", value: 410 }
+          ]
+        }
+      ],
+      sourceField: "from",
+      targetField: "to",
+      valueField: "value",
+      node: { style: { stroke: "#0b1220", lineWidth: 1, fillOpacity: 0.95 } },
       link: { style: { fillOpacity: 0.35 } },
-      label: { visible: true, style: { fill: '#e2e8f0', fontSize: 12 } },
+      label: { visible: true, style: { fill: "#e2e8f0", fontSize: 12 } },
       tooltip: { visible: true }
     };
 
-    function renderSankey() {
-      const VChartCtor = window.VChart && (window.VChart.default || window.VChart);
-      if (!VChartCtor) {
-        document.getElementById('chart').innerHTML = "<div style='padding:16px;color:#fca5a5'>VChart library failed to load from CDN.</div>";
-        return;
-      }
-      const chart = new VChartCtor(chartSpec, { dom: 'chart' });
-      chart.renderSync();
-    }
-
-    renderSankey();
+    const VChartCtor = window.VChart && (window.VChart.default || window.VChart);
+    const chart = new VChartCtor(spec, { dom: "chart" });
+    chart.renderSync();
   </script>
 </body>
 </html>
