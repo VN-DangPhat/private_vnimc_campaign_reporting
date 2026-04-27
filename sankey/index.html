@@ -3,28 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sankey Project (Local VChart)</title>
-  <link rel="stylesheet" href="./style.css" />
+  <title>VChart Getting Started - Sankey</title>
+  <style>
+    body { margin: 0; background: #0f172a; color: #e2e8f0; font-family: Arial, sans-serif; }
+    .wrap { max-width: 1200px; margin: 20px auto; padding: 0 16px; }
+    .card { background: #111827; border: 1px solid #334155; border-radius: 12px; padding: 12px; }
+    #chart { height: 680px; }
+    .msg { margin-top: 10px; font-size: 13px; color: #94a3b8; }
+  </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>Sankey Dashboard (Project Build)</h1>
-    <p class="sub">Built from scratch with local VChart bundle to avoid CDN import/module issues.</p>
-
-    <div class="grid">
-      <div class="card"><div class="k">Exposure</div><div class="v" id="kpi-exposure">-</div></div>
-      <div class="card"><div class="k">Click</div><div class="v" id="kpi-click">-</div></div>
-      <div class="card"><div class="k">AddToCart</div><div class="v" id="kpi-atc">-</div></div>
-      <div class="card"><div class="k">Checkout</div><div class="v" id="kpi-checkout">-</div></div>
-      <div class="card"><div class="k">Paid</div><div class="v" id="kpi-paid">-</div></div>
-      <div class="card"><div class="k">CVR (Exposure→Paid)</div><div class="v" id="kpi-cvr">-</div></div>
+    <h2>VChart Getting Started \(Sankey\)</h2>
+    <div class="card">
+      <div id="chart"></div>
+      <div id="msg" class="msg"></div>
     </div>
-
-    <div id="chart"></div>
-    <div id="msg" class="msg"></div>
   </div>
 
+  <!-- local bundled vchart for stable rendering -->
   <script src="./vendor/vchart.min.js"></script>
-  <script src="./app.js"></script>
+  <script>
+    const spec = {
+      type: 'sankey',
+      width: 'container',
+      height: 680,
+      data: [{
+        id: 'sankey_data',
+        values: [
+          { from: 'Exposure', to: 'Click', value: 1200 },
+          { from: 'Exposure', to: 'Skip', value: 520 },
+          { from: 'Click', to: 'AddToCart', value: 760 },
+          { from: 'Click', to: 'Bounce', value: 280 },
+          { from: 'AddToCart', to: 'Checkout', value: 530 },
+          { from: 'Checkout', to: 'Paid', value: 410 }
+        ]
+      }],
+      sourceField: 'from',
+      targetField: 'to',
+      valueField: 'value',
+      node: { style: { stroke: '#0b1220', lineWidth: 1, fillOpacity: 0.95 } },
+      link: { style: { fillOpacity: 0.35 } },
+      label: { visible: true, style: { fill: '#e2e8f0', fontSize: 12 } },
+      tooltip: { visible: true }
+    };
+
+    const msg = document.getElementById('msg');
+    try {
+      const VChartCtor = window.VChart && (window.VChart.default || window.VChart);
+      if (!VChartCtor) throw new Error('VChart not loaded');
+      const chart = new VChartCtor(spec, { dom: 'chart' });
+      chart.renderSync();
+      msg.textContent = 'Rendered successfully. Updated at 2026-04-28 02:10:44';
+      msg.style.color = '#86efac';
+    } catch (err) {
+      msg.textContent = 'Render failed: ' + (err?.message || String(err));
+      msg.style.color = '#fca5a5';
+    }
+  </script>
 </body>
 </html>
