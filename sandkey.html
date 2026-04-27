@@ -8,22 +8,14 @@
     body { margin: 0; background: #0f172a; color: #e2e8f0; font-family: Arial, sans-serif; }
     .wrap { max-width: 1200px; margin: 20px auto; padding: 0 16px; }
     #chart { height: 680px; background: #111827; border: 1px solid #334155; border-radius: 10px; }
+    .msg { margin-top: 10px; color: #fca5a5; font-size: 13px; }
   </style>
-
-  <!-- unpkg -->
-  <script src="https://unpkg.com/@visactor/vchart/build/index.min.js"></script>
-
-  <!-- jsDelivr fallback -->
-  <script>
-    if (!window.VChart) {
-      document.write('<script src="https://cdn.jsdelivr.net/npm/@visactor/vchart/build/index.min.js"><\/script>');
-    }
-  </script>
 </head>
 <body>
   <div class="wrap">
     <h2>VChart Sankey Demo</h2>
     <div id="chart"></div>
+    <div id="msg" class="msg"></div>
   </div>
 
   <script>
@@ -31,19 +23,17 @@
       type: "sankey",
       width: "container",
       height: 680,
-      data: [
-        {
-          id: "sankey_data",
-          values: [
-            { from: "Exposure", to: "Click", value: 1200 },
-            { from: "Exposure", to: "Skip", value: 520 },
-            { from: "Click", to: "AddToCart", value: 760 },
-            { from: "Click", to: "Bounce", value: 280 },
-            { from: "AddToCart", to: "Checkout", value: 530 },
-            { from: "Checkout", to: "Paid", value: 410 }
-          ]
-        }
-      ],
+      data: [{
+        id: "sankey_data",
+        values: [
+          { from: "Exposure", to: "Click", value: 1200 },
+          { from: "Exposure", to: "Skip", value: 520 },
+          { from: "Click", to: "AddToCart", value: 760 },
+          { from: "Click", to: "Bounce", value: 280 },
+          { from: "AddToCart", to: "Checkout", value: 530 },
+          { from: "Checkout", to: "Paid", value: 410 }
+        ]
+      }],
       sourceField: "from",
       targetField: "to",
       valueField: "value",
@@ -53,9 +43,43 @@
       tooltip: { visible: true }
     };
 
-    const VChartCtor = window.VChart && (window.VChart.default || window.VChart);
-    const chart = new VChartCtor(spec, { dom: "chart" });
-    chart.renderSync();
+    function setMsg(text) { document.getElementById('msg').textContent = text; }
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onload = () => resolve(src);
+        s.onerror = () => reject(new Error(src));
+        document.head.appendChild(s);
+      });
+    }
+
+    async function boot() {
+      try {
+        if (!window.VChart) {
+          try {
+            await loadScript('https://unpkg.com/@visactor/vchart/build/index.min.js');
+          } catch (e1) {
+            await loadScript('https://cdn.jsdelivr.net/npm/@visactor/vchart/build/index.min.js');
+          }
+        }
+
+        const VChartCtor = window.VChart && (window.VChart.default || window.VChart);
+        if (!VChartCtor) {
+          setMsg('VChart CDN was blocked/unreachable. Please check network policy for unpkg/jsDelivr.');
+          return;
+        }
+        const chart = new VChartCtor(spec, { dom: 'chart' });
+        chart.renderSync();
+        setMsg('Rendered successfully. Updated at 2026-04-28 01:58:17');
+      } catch (err) {
+        setMsg('Render failed: ' + (err && err.message ? err.message : String(err)));
+      }
+    }
+
+    boot();
   </script>
 </body>
 </html>
