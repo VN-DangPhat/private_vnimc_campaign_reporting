@@ -1,0 +1,35 @@
+{
+  "updated_at": "2026-04-28 02:06:21",
+  "flows": [
+    {
+      "from": "Exposure",
+      "to": "Click",
+      "value": 1200
+    },
+    {
+      "from": "Exposure",
+      "to": "Skip",
+      "value": 520
+    },
+    {
+      "from": "Click",
+      "to": "AddToCart",
+      "value": 760
+    },
+    {
+      "from": "Click",
+      "to": "Bounce",
+      "value": 280
+    },
+    {
+      "from": "AddToCart",
+      "to": "Checkout",
+      "value": 530
+    },
+    {
+      "from": "Checkout",
+      "to": "Paid",
+      "value": 410
+    }
+  ]
+}
