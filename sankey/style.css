@@ -1,0 +1,14 @@
+
+:root {
+  --bg:#0b1220; --panel:#111a2e; --border:#243250; --text:#e6edf7; --muted:#9fb0cc;
+}
+body { margin:0; background:var(--bg); color:var(--text); font-family: Inter, Arial, sans-serif; }
+.wrap { max-width: 1280px; margin: 20px auto; padding: 0 16px; }
+h1 { margin: 0 0 6px; font-size: 26px; }
+.sub { margin: 0 0 14px; color: var(--muted); }
+.grid { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-bottom: 14px; }
+.card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px; }
+.k { color:var(--muted); font-size:12px; margin-bottom:4px; }
+.v { font-size:20px; font-weight:700; }
+#chart { height: 700px; background:var(--panel); border:1px solid var(--border); border-radius:12px; }
+.msg { margin-top: 10px; font-size: 13px; color: #fca5a5; }
